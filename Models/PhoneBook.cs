@@ -13,7 +13,7 @@ namespace PhoneBook.Models
 		public int Id { get; set; }
 
 		[Required]
-		[MinLength(2)]
+		[MinLength(2, ErrorMessage = "Name field requires a minimum length of 2 characters")]
 		public string Name { get; set; }
 		public IEnumerable<Entry> Entries { get; set; }
 	}

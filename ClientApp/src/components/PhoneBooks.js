@@ -7,6 +7,7 @@ import AddPhoneBookModal from './AddPhoneBookModal'
 const PhoneBookList = () => {
 	const [phoneBooks, setPhoneBooks] = useState([])
 	const [isFetching, setIsFetching] = useState(true)
+	const [addPhoneBookError, setAddPhoneBookError] = useState('')
 	const [showAddPhoneBookModal, setShowAddPhoneBookModal] = useState(false)
 	const history = useHistory()
 
@@ -38,7 +39,7 @@ const PhoneBookList = () => {
 			if (response.status === 200) {
 				history.push(`/phonebooks/${response.data.id}`)
 			} else {
-				alert(response.data)
+				setAddPhoneBookError(Object.values(response.data.errors)[0][0])
 			}
 		},
 		[history],
@@ -82,7 +83,7 @@ const PhoneBookList = () => {
 				))
 			}
 			<button onClick={() => { setShowAddPhoneBookModal(true) }} className="px-4 py-2 mt-4 bg-pink-500 rounded text-white text-sm font-semibold hover:bg-pink-700">New phonebook</button>
-			<AddPhoneBookModal isOpen={showAddPhoneBookModal} onSave={handleSaveClick} onRequestClose={() => { setShowAddPhoneBookModal(false) }} />
+			<AddPhoneBookModal errorMessage={addPhoneBookError} isOpen={showAddPhoneBookModal} onSave={handleSaveClick} onRequestClose={() => { setShowAddPhoneBookModal(false) }} />
 		</>
 	)
 }

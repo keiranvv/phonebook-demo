@@ -10,6 +10,7 @@ const PhoneBookEntries = () => {
 	const [isFetching, setIsFetching] = useState(true)
 	const [showAddEntry, setShowAddEntry] = useState(false)
 	const [showDeletePhoneBook, setShowDeletePhoneBook] = useState(false)
+	const [addEntryError, setAddEntryError] = useState(false)
 	const [query, setQuery] = useState('')
 	const { phoneBookId } = useParams()
 	const history = useHistory()
@@ -22,7 +23,7 @@ const PhoneBookEntries = () => {
 				if (response.status === 200) {
 					setPhoneBook(response.data)
 				} else {
-					console.log(response.data)
+
 				}
 
 				setIsFetching(false)
@@ -68,11 +69,11 @@ const PhoneBookEntries = () => {
 
 			if (response.status === 200) {
 				setPhoneBook(response.data)
+				setShowAddEntry(false)
 			} else {
-				console.log(response.data)
+				setAddEntryError(Object.values(response.data.errors)[0][0])
 			}
 
-			setShowAddEntry(false)
 		},
 		[phoneBook]
 	)
@@ -161,7 +162,7 @@ const PhoneBookEntries = () => {
 				<button onClick={handleSearchClick} className="ml-4 px-6 py-4 bg-pink-500 rounded text-white text-sm font-semibold hover:bg-pink-700">Search</button>
 			</div>
 			{renderItems()}
-			<AddEntryModal isOpen={showAddEntry} onRequestClose={handleAddContactCancel} onSave={handleNewContactSave} />
+			<AddEntryModal errorMessage={addEntryError} isOpen={showAddEntry} onRequestClose={handleAddContactCancel} onSave={handleNewContactSave} />
 			<DeletePhoneBookModal isOpen={showDeletePhoneBook} onRequestClose={() => { setShowDeletePhoneBook(false) }} onDelete={handlePhoneBookDelete} />
 		</>
 	)
