@@ -99,16 +99,26 @@ const PhoneBookEntries = () => {
 
 	const handleSearchClick = useCallback(
 		async () => {
-			const response = await searchPhoneBookEntries(phoneBookId, query)
+			if (query.trim() === '') {
+				const response = await getPhoneBookById(phoneBookId)
 
-			if (response.status === 200) {
-				const p = {
-					...phoneBook,
-					entries: response.data,
+				if (response.status === 200) {
+					setPhoneBook(response.data)
+				} else {
+					console.log(response.data)
 				}
-				setPhoneBook(p)
 			} else {
-				console.log(response.data)
+				const response = await searchPhoneBookEntries(phoneBookId, query)
+
+				if (response.status === 200) {
+					const p = {
+						...phoneBook,
+						entries: response.data,
+					}
+					setPhoneBook(p)
+				} else {
+					console.log(response.data)
+				}
 			}
 		},
 		[phoneBook, phoneBookId, query],
@@ -117,17 +127,7 @@ const PhoneBookEntries = () => {
 	const handleSearchKeyDown = useCallback(
 		async (e) => {
 			if (e.which === 13) {
-				if (query.trim() === '') {
-					const response = await getPhoneBookById(phoneBookId)
-
-					if (response.status === 200) {
-						setPhoneBook(response.data)
-					} else {
-						console.log(response.data)
-					}
-				} else {
-					handleSearchClick()
-				}
+				handleSearchClick()
 			}
 		},
 		[phoneBook, phoneBookId, query]

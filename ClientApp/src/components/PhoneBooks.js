@@ -54,6 +54,21 @@ const PhoneBookList = () => {
 		)
 	}
 
+	if (phoneBooks.length === 0) {
+		return (
+			<div className="max-w-lg mt-10 mx-auto my-auto">
+				<h1 className="font-bold text-4xl text-gray-800">
+					Looks like you have no friends
+				</h1>
+				<div className="my-4 text-gray-600">
+					Get some imaginary friends by creating a new virtual phone book.
+				</div>
+				<button onClick={() => { setShowAddPhoneBookModal(true) }} className="px-4 py-2 mt-4 bg-pink-500 rounded text-white text-sm font-semibold hover:bg-pink-700">New phonebook</button>
+				<AddPhoneBookModal isOpen={showAddPhoneBookModal} onSave={handleSaveClick} onRequestClose={() => { setShowAddPhoneBookModal(false) }} />
+			</div>
+		)
+	}
+
 	return (
 		<>
 			{
